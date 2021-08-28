@@ -35,15 +35,32 @@ names(df_sp500)
 #df_sp500 %<>% 
 #  mutate(price_10down = Price - (Price * .1))
 
+#AAPL
 getSymbols("AAPL" , auto.assign = TRUE)
 str(AAPL)
 summary(AAPL)
 unique(AAPL)
 class(AAPL)
 names(AAPL)
+
+data_AAPL <- data.frame(AAPL)
+setDT(data_AAPL , keep.rownames = "date")
+
+data_AAPL %<>%
+  mutate(year = year(date))
+data_AAPL_2020 <- data_AAPL%>%
+  filter(year == 2020)
+
+#AMAT
 getSymbols("AMAT" , auto.assign = TRUE)
 str(AMAT)
 head(AMAT)  
 
+data_AMAT <- data.frame(AMAT)
+setDT(data_AMAT , keep.rownames = "date")
 
-setDT(AMAT , keep.rownames = "date")
+data_AMAT %<>% 
+  mutate(year = year(date))
+
+data_AMAT_2020 <- data_AMAT%>%
+  filter(year == 2020)
