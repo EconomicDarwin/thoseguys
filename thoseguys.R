@@ -3,11 +3,14 @@
 
 library(tidyverse)
 library(magrittr)
+library(quantmod)
+library(lubridate)
+library(data.table)
 
 # Load Data ---------------------------------------------------------------
 
-df_sp500_org <- read_csv("documents/r_thoseguys/data/constituents-financials_csv.csv")
-df_vix <- read_csv("documents/r_thoseguys/data/vix-daily_csv.csv")
+df_sp500_org <- read_csv("data/constituents-financials_csv.csv")
+df_vix <- read_csv("data/vix-daily_csv.csv")
 
 # Functions examples ------------------------------------------------------
 
@@ -26,12 +29,21 @@ names(df_sp500)
 
 
 
-df_sp500 <- df_sp500_org %>% 
-  select(-`SEC Filings`)
+#df_sp500 <- df_sp500_org %>% 
+#  select(-`SEC Filings`)
 
-df_sp500 %<>% 
-  mutate(price_10down = Price - (Price * .1))
+#df_sp500 %<>% 
+#  mutate(price_10down = Price - (Price * .1))
+
+getSymbols("AAPL" , auto.assign = TRUE)
+str(AAPL)
+summary(AAPL)
+unique(AAPL)
+class(AAPL)
+names(AAPL)
+getSymbols("AMAT" , auto.assign = TRUE)
+str(AMAT)
+head(AMAT)  
 
 
-
-  
+setDT(AMAT , keep.rownames = "date")
