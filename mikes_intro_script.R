@@ -1,10 +1,12 @@
 # Load Library ------------------------------------------------------------
 library(tidyverse)
 library(magrittr)
+library(lubridate)
+
 
 # Import Data -------------------------------------------------------------
-df_constituents_original <- read_csv("documents/r_thoseguys/data/constituents-financials_csv.csv")
-df_vix_daily <- read_csv("documents/r_thoseguys/data/vix-daily_csv.csv")
+df_constituents_original <- read_csv("~/r_thoseguys/data/constituents-financials_csv.csv")
+df_vix_daily <- read_csv("~/r_thoseguys/data/vix-daily_csv.csv")
 
 
 # Initalize User Input Variables ------------------------------------------
@@ -41,14 +43,12 @@ df_constituents %<>%
 
 df_constituents %<>% 
   mutate(below_50 = ifelse(Price <= 50, 1, 0))
-  
-x <- df_constituents %>% filter(Price <= 5)
 
+
+# Quick Plot
 plot(df_constituents$Price)
 
-x <- sample(df_constituents, 20)
-
-
+# Filtering data by Sector, Price, and Dividend Yield and plotting them
 df_constituents %>% 
   filter(Sector == "Health Care") %>% 
   filter(Price <= price_max) %>% 
@@ -61,5 +61,26 @@ df_constituents %>%
   ggtitle("Filtered Health Care by Price") +
   xlab("Health Care Company Name") +
   ylab("Price ($)")
+
+
+# Grouping by Sector and finding min and max prices
+df_constituents %>% 
+  group_by(Sector) %>% 
+  summarise(min_price = min(Price),
+            max_price = max(Price))
+
+
+
+# Create Year column to make it easier to filer
+df_vix_daily %<>% 
+  mutate(year = year(Date))
+
+# Filter on year 2020 and plot results
+df_vix_daily %>% 
+  filter(year == 2020) %>% 
+  ggplot(aes(x = Date)) + 
+  geom_line(aes(y = `VIX Open`), color = "blue") + 
+  geom_line(aes(y = `VIX Close`), color = "red") + 
+  theme_dark()
 
 
