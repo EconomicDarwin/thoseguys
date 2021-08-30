@@ -13,6 +13,10 @@ data_AMAT_2020 <- data_AMAT %>%
 
 
 names_price <- c("date", "open", "high", "low", "close", "colume", "adjusted", "year")
+
+
+
+
 names(data_AAPL_2020) <- names_price
 names(data_AMAT_2020) <- names_price
 
